@@ -33,7 +33,13 @@ public class ProductRepository {
         return result;
     }
 
-    public void add(Produkt produkt){
+    public boolean add(Produkt produkt){
+        for (Produkt prod : produkty) {
+            if(prod.equals(produkt)) {
+                return false;
+            }
+        }
         produkty.add(produkt);
+        return true;
     }
 }

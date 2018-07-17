@@ -55,7 +55,11 @@ public class ProductController {
         String kategoria = request.getParameter("kategoria");
 
         Produkt prd = new Produkt(nazwa, Double.parseDouble(cena), Kategoria.valueOf(kategoria));
-       productRepository.add(prd);
-        return "/success.html";
+        boolean isAdded = productRepository.add(prd);
+
+        if(isAdded) {
+            return "/success.html";
+        }
+        return  "/error.html";
     }
 }

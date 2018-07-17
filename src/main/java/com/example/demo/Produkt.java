@@ -1,5 +1,7 @@
 package com.example.demo;
 
+import java.util.Objects;
+
 public class Produkt {
     private String nazwa;
     private double cena;
@@ -9,6 +11,22 @@ public class Produkt {
         this.nazwa = name;
         this.cena = price;
         this.kategoria = kategoria;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Produkt produkt = (Produkt) o;
+        return Double.compare(produkt.cena, cena) == 0 &&
+                Objects.equals(nazwa, produkt.nazwa) &&
+                kategoria == produkt.kategoria;
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(nazwa, cena, kategoria);
     }
 
     public double getCena() {
