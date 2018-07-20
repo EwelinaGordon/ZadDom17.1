@@ -1,10 +1,9 @@
 package com.example.demo;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Controller
@@ -16,50 +15,54 @@ public class ProductController {
         this.productRepository = productRepository;
     }
 
-    @ResponseBody
-    @RequestMapping("/produkty")
-    public String wyswietlProdukty() {
+    @GetMapping("/produkty") //lepiej GetMapping bo chcemy zaciesniac i wiemy ze uzytkownik bedzie dzialal z poziomu przegladarki
+    public String wyswietlProdukty(Model model) {
         List<Produkt> produkty = productRepository.getProdukty();
 
-        String listaProduktow = "";
         double price = 0;
         for (Produkt produkt : produkty) {
-
-            listaProduktow += produkt.toString() + "<br>";
             price += produkt.getCena();
         }
-        return listaProduktow + "</br>" + "Cena wszystkich produktów: " + price;
+
+        model.addAttribute("produkty", produkty);
+        model.addAttribute("suma", price);
+
+        return "listaproduktow";
     }
 
-    @RequestMapping("/rodzaj")
-    @ResponseBody
-    public String wyswietlProduktySpozywcze(HttpServletRequest request) {
-        Kategoria kategoria = Kategoria.valueOf(request.getParameter("kategoria"));
-
+    @GetMapping("/rodzaj")
+    public String wyswietlProduktyKategorii(Model model, @RequestParam (value="kategoria") Kategoria kategoria) {
         List<Produkt> produktyWKategorii = productRepository.getProduktyWKategorii(kategoria);
 
-        String listaProduktow = " ";
         double price = 0;
 
         for (Produkt produkt : produktyWKategorii) {
-            listaProduktow += produkt.toString() + "</br>";
             price += produkt.getCena();
         }
-        return listaProduktow + "</br>" + "Cena wszystkich produktów: " + price;
+
+        model.addAttribute("produktyKat", produktyWKategorii);
+        model.addAttribute("suma", price);
+
+        return "listaproduktowkategoria";
     }
 
-    @RequestMapping("/add")
-    public String dodajProdukt(HttpServletRequest request){
-        String nazwa = request.getParameter("nazwa");
-        String cena = request.getParameter("cena");
-        String kategoria = request.getParameter("kategoria");
-
-        Produkt prd = new Produkt(nazwa, Double.parseDouble(cena), Kategoria.valueOf(kategoria));
+    @PostMapping("/add")
+    public String dodajProdukt(@RequestParam(value="nazwa") String nazwa, @RequestParam(value="cena") Double cena, @RequestParam(value="kategoria") String kategoria){
+        Produkt prd = new Produkt(nazwa, cena, Kategoria.valueOf(kategoria));
         boolean isAdded = productRepository.add(prd);
-
         if(isAdded) {
-            return "/success.html";
+            return "redirect:success";
         }
-        return  "/error.html";
+        return "redirect:blad";
+    }
+
+    @GetMapping("/success")
+    public String success() {
+        return "success.html";
+    }
+
+    @GetMapping("/blad")
+    public String error() {
+        return "error.html";
     }
 }

@@ -13,6 +13,8 @@ public class Produkt {
         this.kategoria = kategoria;
     }
 
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -27,6 +29,10 @@ public class Produkt {
     public int hashCode() {
 
         return Objects.hash(nazwa, cena, kategoria);
+    }
+
+    public String getNazwa() {
+        return nazwa;
     }
 
     public double getCena() {

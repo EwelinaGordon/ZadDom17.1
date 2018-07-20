@@ -1,13 +1,34 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Produkty</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous">
 </head>
 <body>
-<a href="/produkty"> wyświetl wszystkie produkty</a></br>
-<a href="/rodzaj?kategoria=SPOZYWCZE"> wyświetl produkty z kategorii art. spożywcze </a></br>
-<a href="/rodzaj?kategoria=GOSP_DOM"> wyświetl produkty z kategorii art. gosp. domowej </a></br>
-<a href="/rodzaj?kategoria=INNE"> wyświetl produkty z kategorii inne </a></br>
+<ul>
+    <li><a href="/produkty"> wyświetl wszystkie produkty</a></li>
+    <li><a href="/rodzaj?kategoria=SPOZYWCZE"> wyświetl produkty z kategorii art. spożywcze </a></li>
+    <li><a href="/rodzaj?kategoria=GOSP_DOM"> wyświetl produkty z kategorii art. gosp. domowej </a></li>
+    <li><a href="/rodzaj?kategoria=INNE"> wyświetl produkty z kategorii inne </a></li>
+</ul>
+<br/>
+<h3>Dodawanie nowego produktu</h3><br/>
+
+
+<!--<input type="text" name="kategoria" placeholder="kategoria">-->
+
+    <form method="post" action="/add">
+        <div class="input-group input-group-sm mb-3">
+        <input type="text" name="nazwa" placeholder="nazwa">
+        <input type="text" name="cena" placeholder="cena">
+        <select name="kategoria">
+      <option value="SPOZYWCZE">Art. spożywcze</option>
+     <option value="GOSP_DOM">Art. gosp. domowego</option>
+     <option value="INNE">Inne</option>
+</select>
+<input type="submit" value="dodaj produkt" >
+</div>
+</form>
 </body>
 </html>
